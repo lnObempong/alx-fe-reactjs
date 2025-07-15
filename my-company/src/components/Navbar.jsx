@@ -4,13 +4,14 @@ const navStyle = {
   padding: '10px 20px',
   backgroundColor: '#333',
   display: 'flex',
-  gap: '20px'
+  gap: '20px',
+  justifyContent: 'space-between',  // <-- Add this line
 };
 
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 };
 
 function Navbar() {
