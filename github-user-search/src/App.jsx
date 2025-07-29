@@ -1,11 +1,9 @@
-// src/App.jsx
-import React from 'react';
-import Search from './components/Search';
+
+import Search from "./components/Search";
 
 function App() {
   return (
-    <div>
-      <h1>GitHub User Search</h1>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-start pt-10">
       <Search />
     </div>
   );
