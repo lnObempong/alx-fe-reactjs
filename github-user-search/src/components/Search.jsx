@@ -9,6 +9,11 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ✅ Wrapper required by project spec
+  const fetchUserData = async ({ username, location, minRepos }) => {
+    return await fetchAdvancedUsers({ username, location, minRepos });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -16,10 +21,10 @@ const Search = () => {
     setUsers([]);
 
     try {
-      const data = await fetchAdvancedUsers({ username, location, minRepos });
+      const data = await fetchUserData({ username, location, minRepos });
       setUsers(data.items);
     } catch (err) {
-      setError("Looks like we cant find the user");
+      setError("Looks like we can't find the user");
     } finally {
       setLoading(false);
     }

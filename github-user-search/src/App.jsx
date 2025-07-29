@@ -1,12 +1,21 @@
+import React, { useState } from 'react';
+import Search from './components/Search';
 
-import Search from "./components/Search";
+const App = () => {
+  const [userData, setUserData] = useState(null);
 
-function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-start pt-10">
-      <Search />
+    <div>
+      <Search onUserData={setUserData} />
+      {userData && (
+        <div>
+          <h2>{userData.name}</h2>
+          <p>{userData.bio}</p>
+          <img src={userData.avatar_url} alt="avatar" width={100} />
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
