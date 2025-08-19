@@ -6,9 +6,7 @@ import BlogPost from "./components/BlogPost";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Profile from "./components/Profile"; // ✅ updated import
-import ProfileDetails from "./components/ProfileDetails";
-import ProfileSettings from "./components/ProfileSettings";
+import Profile from "./components/Profile";
 
 function Nav() {
   const { authed, logout } = useAuth();
@@ -19,7 +17,9 @@ function Nav() {
       {authed && (
         <>
           {" | "}
-          <button onClick={logout} style={{ marginLeft: 8 }}>Logout</button>
+          <button onClick={logout} style={{ marginLeft: 8 }}>
+            Logout
+          </button>
         </>
       )}
     </nav>
@@ -28,8 +28,8 @@ function Nav() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
         <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
           <h1>React Router Advanced</h1>
           <Nav />
@@ -40,19 +40,15 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/blog/:id" element={<BlogPost />} />
 
-            {/* Protected parent with nested children */}
+            {/* Protected parent now just points to Profile */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/profile" element={<Profile />}>
-                <Route index element={<ProfileDetails />} />
-                <Route path="details" element={<ProfileDetails />} />
-                <Route path="settings" element={<ProfileSettings />} />
-              </Route>
+              <Route path="/profile/*" element={<Profile />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
-      </AuthProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
