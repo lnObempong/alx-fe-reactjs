@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-// A tiny fake API to simulate a server request (no internet needed)
 function mockRegister(payload) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      // Super simple "success" condition; tweak as you like
       if (payload.email && payload.password && payload.username) {
         resolve({ id: Date.now(), token: "mock-token-123", ...payload });
       } else {
@@ -15,11 +13,10 @@ function mockRegister(payload) {
 }
 
 export default function RegistrationForm() {
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  // separate states for each field
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [errors, setErrors] = useState({});
   const [serverState, setServerState] = useState({
@@ -30,20 +27,13 @@ export default function RegistrationForm() {
 
   const validate = () => {
     const next = {};
-    if (!form.username.trim()) next.username = "Username is required";
-    if (!form.email.trim()) next.email = "Email is required";
-    else if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = "Enter a valid email";
-    if (!form.password) next.password = "Password is required";
-    else if (form.password.length < 6) next.password = "Min 6 characters";
+    if (!username.trim()) next.username = "Username is required";
+    if (!email.trim()) next.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Enter a valid email";
+    if (!password) next.password = "Password is required";
+    else if (password.length < 6) next.password = "Min 6 characters";
     setErrors(next);
     return Object.keys(next).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-    // clear a field’s error when user edits it
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
   const handleSubmit = async (e) => {
@@ -52,13 +42,16 @@ export default function RegistrationForm() {
 
     setServerState({ loading: true, success: null, message: "" });
     try {
-      const result = await mockRegister(form);
+      const result = await mockRegister({ username, email, password });
       setServerState({
         loading: false,
         success: true,
         message: `Registered! User ID: ${result.id}`,
       });
-      setForm({ username: "", email: "", password: "" });
+      // reset fields
+      setUsername("");
+      setEmail("");
+      setPassword("");
     } catch (err) {
       setServerState({
         loading: false,
@@ -77,8 +70,8 @@ export default function RegistrationForm() {
           <input
             id="username"
             name="username"
-            value={form.username}
-            onChange={handleChange}
+            value={username}   {/* ✅ explicit controlled binding */}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="e.g. leocode"
             style={{ width: "100%", padding: 8 }}
           />
@@ -91,8 +84,8 @@ export default function RegistrationForm() {
             id="email"
             type="email"
             name="email"
-            value={form.email}
-            onChange={handleChange}
+            value={email}   {/* ✅ explicit controlled binding */}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="e.g. you@example.com"
             style={{ width: "100%", padding: 8 }}
           />
@@ -105,28 +98,5 @@ export default function RegistrationForm() {
             id="password"
             type="password"
             name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Min 6 characters"
-            style={{ width: "100%", padding: 8 }}
-          />
-          {errors.password && <small style={{ color: "crimson" }}>{errors.password}</small>}
-        </div>
-
-        <button
-          type="submit"
-          disabled={serverState.loading}
-          style={{ padding: "10px 14px", cursor: "pointer" }}
-        >
-          {serverState.loading ? "Submitting..." : "Register"}
-        </button>
-      </form>
-
-      {serverState.message && (
-        <p style={{ marginTop: 12, color: serverState.success ? "green" : "crimson" }}>
-          {serverState.message}
-        </p>
-      )}
-    </div>
-  );
-}
+            value={password}   {/* ✅ explicit controlled binding */}
+            onChange={(e) => setPassword(e.target.value)}
