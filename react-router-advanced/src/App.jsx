@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider, useAuth } from "./auth/AuthContext";
 import Home from "./components/Home";
 import About from "./components/About";
@@ -28,29 +28,31 @@ function Nav() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
-        <h1>React Router Advanced</h1>
-        <Nav />
+    <BrowserRouter>
+      <AuthProvider>
+        <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
+          <h1>React Router Advanced</h1>
+          <Nav />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
 
-          {/* Protected parent with nested children */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<ProfileLayout />}>
-              <Route index element={<ProfileDetails />} />
-              <Route path="details" element={<ProfileDetails />} />
-              <Route path="settings" element={<ProfileSettings />} />
+            {/* Protected parent with nested children */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfileLayout />}>
+                <Route index element={<ProfileDetails />} />
+                <Route path="details" element={<ProfileDetails />} />
+                <Route path="settings" element={<ProfileSettings />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-    </AuthProvider>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
