@@ -6,7 +6,7 @@ import BlogPost from "./components/BlogPost";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ProfileLayout from "./components/ProfileLayout";
+import Profile from "./components/Profile"; // ✅ updated import
 import ProfileDetails from "./components/ProfileDetails";
 import ProfileSettings from "./components/ProfileSettings";
 
@@ -42,7 +42,7 @@ export default function App() {
 
             {/* Protected parent with nested children */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/profile" element={<ProfileLayout />}>
+              <Route path="/profile" element={<Profile />}>
                 <Route index element={<ProfileDetails />} />
                 <Route path="details" element={<ProfileDetails />} />
                 <Route path="settings" element={<ProfileSettings />} />
